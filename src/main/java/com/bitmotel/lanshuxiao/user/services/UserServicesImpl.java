@@ -1,5 +1,6 @@
 package com.bitmotel.lanshuxiao.user.services;
 
+import com.bitmotel.lanshuxiao.exception.BusinessException;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,17 @@ public class UserServicesImpl implements UserServicesI {
             userMapper.add(user);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BusinessException("Insert failed");
         }
-        return false;
     }
 
     @Override
     public Users queryByName(String username) {
         Optional<Users> user = Optional.ofNullable(userMapper.queryByName(username));
-        return user.orElse(null);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        throw new BusinessException("Query failed");
     }
 
     @Override
@@ -40,10 +43,9 @@ public class UserServicesImpl implements UserServicesI {
         try {
             userMapper.update(user);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch(Exception e) {
+            throw new BusinessException("Update failed");
         }
-        return false;
     }
 
     @Override
@@ -52,8 +54,7 @@ public class UserServicesImpl implements UserServicesI {
             userMapper.delete(user);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BusinessException("Delete failed");
         }
-        return false;
     }
 }

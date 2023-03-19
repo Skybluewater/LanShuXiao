@@ -1,6 +1,7 @@
 package com.bitmotel.lanshuxiao.user.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import java.sql.Time;
 
@@ -9,6 +10,7 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Users {
+    @Id
     @Generated
     private Integer id;
     @NonNull
