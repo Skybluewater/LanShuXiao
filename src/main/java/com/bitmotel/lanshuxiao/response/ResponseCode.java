@@ -7,11 +7,14 @@ import lombok.Data;
 @AllArgsConstructor
 public enum ResponseCode {
     OK(200, "Successive"),
-    PERMISSION_DENIED(403, "Permission denied"),
-    RESOURCE_NOT_FOUND(404, "Resource not found");
+    UNAUTHORIZED(401, "Need to verify identity"),
+    FORBIDDEN(403, "Forbidden"),
+    RESOURCE_NOT_FOUND(404, "Resource not found"),
+    METHOD_NOT_ALLOWED(405, "Method not allowed"),
+    NOT_ACCEPTABLE(406, "Request content not satisfied");
 
-    public Integer code;
-    public String msg;
+    public final Integer code;
+    public final String msg;
 
     public Integer getCode() {
         return this.code;

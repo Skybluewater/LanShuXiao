@@ -22,6 +22,10 @@ public class Response<T> {
         return new Response<T>(200, msg, data);
     }
 
+    public static Response<Object> fail(ResponseCode responseCode) {
+        return new Response<Object>(responseCode.code, responseCode.msg, null);
+    }
+
     public static Response<Object> fail(Integer code, String msg) {
         return new Response<Object>(code, msg, null);
     }
