@@ -1,5 +1,8 @@
 package com.bitmotel.lanshuxiao.user.controller;
 
+import com.bitmotel.lanshuxiao.annotation.LoginRequired;
+import com.bitmotel.lanshuxiao.annotation.LogoutRequired;
+import com.bitmotel.lanshuxiao.exception.BusinessException;
 import com.bitmotel.lanshuxiao.response.Response;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.services.UserServicesI;
@@ -17,20 +20,22 @@ public class UserController {
     UserServicesI userServicesI;
 
     @PostMapping("/login")
+    @LoginRequired
     @ResponseBody
-    public Response<Boolean> login(@RequestBody @Validated Users user, HttpSession session) throws Exception {
+    public Response<Boolean> login(@RequestBody @Validated Users user, HttpSession session) throws BusinessException {
         Users oldUser = userServicesI.queryByName(user.getUsername());
         if (oldUser == null) {
-            throw new Exception("User info error");
+            throw new BusinessException("User info error");
         }
         if (oldUser.getPassword().equals(user.getPassword())) {
             session.setAttribute("userID", oldUser.getId());
             return Response.success(true);
         }
-        return Response.fail(200, "password does not match", false);
+        throw new BusinessException("Password not matched");
     }
 
     @PostMapping("/register")
+    @LogoutRequired
     @ResponseBody
     public Response<Users> register(@RequestBody @Validated Users user) {
         userServicesI.add(user);
@@ -38,6 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
+    @LoginRequired
     @ResponseBody
     public Response<Boolean> logout(HttpSession session) {
         Object userID = session.getAttribute("userID");

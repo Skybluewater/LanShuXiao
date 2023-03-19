@@ -20,8 +20,13 @@ public class ExceptionAdvice {
         return Response.fail(ex.getMessage());
     }
 
-    @ExceptionHandler({BusinessException.class})
+    @ExceptionHandler({PermissionException.class})
     public Response<?> handlerPermissionException(PermissionException ex) {
+        return Response.fail(ex.getMessage());
+    }
+
+    @ExceptionHandler({ForbiddenException.class})
+    public Response<?> handlerForbiddenException(ForbiddenException ex) {
         return Response.fail(ex.getMessage());
     }
 
@@ -37,11 +42,6 @@ public class ExceptionAdvice {
             return Response.fail(ResponseCode.FORBIDDEN.code, msg);
         }
         return Response.fail(ResponseCode.FORBIDDEN);
-    }
-
-    @ExceptionHandler({ForbiddenException.class})
-    public Response<?> handlerForbiddenException(ForbiddenException ex) {
-        return Response.fail(ex.getMessage());
     }
 
     @ExceptionHandler({ConstraintViolationException.class})

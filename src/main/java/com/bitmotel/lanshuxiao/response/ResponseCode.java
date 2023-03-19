@@ -11,7 +11,8 @@ public enum ResponseCode {
     FORBIDDEN(403, "Forbidden"),
     RESOURCE_NOT_FOUND(404, "Resource not found"),
     METHOD_NOT_ALLOWED(405, "Method not allowed"),
-    NOT_ACCEPTABLE(406, "Request content not satisfied");
+    NOT_ACCEPTABLE(406, "Request content not satisfied"),
+    UNPROCESSABLE_ENTITY(422, "Unprocessable Entity");
 
     public final Integer code;
     public final String msg;
