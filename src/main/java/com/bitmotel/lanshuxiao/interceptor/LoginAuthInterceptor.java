@@ -26,7 +26,7 @@ public class LoginAuthInterceptor implements HandlerInterceptor {
         }
         // Check if user has login
         HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
+        Object userId = session.getAttribute("userID");
         if (userId == null) {
             throw new PermissionException("Login to continue");
         }

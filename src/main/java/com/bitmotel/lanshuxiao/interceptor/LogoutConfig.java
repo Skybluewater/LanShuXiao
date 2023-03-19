@@ -17,7 +17,7 @@ public class LogoutConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logoutAuthInterceptor()).addPathPatterns(List.of(
                         "/user/login",
-                        "/user/registry"));
+                        "/user/register"));
     }
 }
 

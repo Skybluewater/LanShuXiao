@@ -20,7 +20,7 @@ public class UserController {
     UserServicesI userServicesI;
 
     @PostMapping("/login")
-    @LoginRequired
+    @LogoutRequired
     @ResponseBody
     public Response<Boolean> login(@RequestBody @Validated Users user, HttpSession session) throws BusinessException {
         Users oldUser = userServicesI.queryByName(user.getUsername());
@@ -29,6 +29,7 @@ public class UserController {
         }
         if (oldUser.getPassword().equals(user.getPassword())) {
             session.setAttribute("userID", oldUser.getId());
+            System.out.println(session.getAttribute("userID"));
             return Response.success(true);
         }
         throw new BusinessException("Password not matched");
@@ -47,9 +48,6 @@ public class UserController {
     @ResponseBody
     public Response<Boolean> logout(HttpSession session) {
         Object userID = session.getAttribute("userID");
-        if (userID == null) {
-            return Response.fail(400, "user hasn't login", false);
-        }
         session.removeAttribute("userID");
         return Response.success(true);
     }
