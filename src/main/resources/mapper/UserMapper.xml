@@ -6,7 +6,7 @@
     <select id="queryAll" resultType="com.bitmotel.lanshuxiao.user.entity.Users">
         select * from Users
     </select>
-    <insert id="add" parameterType="com.bitmotel.lanshuxiao.user.entity.Users" useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" parameterType="com.bitmotel.lanshuxiao.user.entity.Users" useGeneratedKeys="true" keyProperty="user_id">
         insert into Users(username, password, email, avatar, sex, createTime, updateTime) values (#{username},#{password},#{email}, #{avatar}, #{sex}, #{createTime}, #{updateTime})
     </insert>
     <select id="queryByName" resultType="com.bitmotel.lanshuxiao.user.entity.Users">

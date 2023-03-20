@@ -28,7 +28,7 @@ public class UserController {
             throw new BusinessException("User info error");
         }
         if (oldUser.getPassword().equals(user.getPassword())) {
-            session.setAttribute("userID", oldUser.getId());
+            session.setAttribute("userID", oldUser.getUser_id());
             System.out.println(session.getAttribute("userID"));
             return Response.success(true);
         }
@@ -39,6 +39,10 @@ public class UserController {
     @LogoutRequired
     @ResponseBody
     public Response<Users> register(@RequestBody @Validated Users user) {
+        Users oldUser = userServicesI.queryByName(user.getUsername());
+        if (oldUser != null) {
+            throw new BusinessException("Username has existed");
+        }
         userServicesI.add(user);
         return Response.success(user);
     }
@@ -47,7 +51,6 @@ public class UserController {
     @LoginRequired
     @ResponseBody
     public Response<Boolean> logout(HttpSession session) {
-        Object userID = session.getAttribute("userID");
         session.removeAttribute("userID");
         return Response.success(true);
     }

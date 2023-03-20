@@ -32,6 +32,8 @@ dependencies {
     // session + redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'
+    // page separator
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

@@ -15,7 +15,7 @@ import java.sql.Time;
 public class Users {
     @Id
     @Generated
-    private Integer id;
+    private Integer user_id;
     @NotBlank(message = "Username cannot be blank")
     private String username;
     @NotBlank(message = "Password cannot be blank")
