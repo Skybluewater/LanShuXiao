@@ -83,6 +83,7 @@ public class EssayServicesImpl implements EssayServicesI {
     private Essays convertEssayEntityToEssays(EssayEntity entity) {
         return null;
     }
+
     private EssayEntity convertEssaysToEssayEntity(Essays essay) {
         return null;
     }
