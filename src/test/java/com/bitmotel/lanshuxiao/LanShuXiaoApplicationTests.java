@@ -1,5 +1,7 @@
 package com.bitmotel.lanshuxiao;
 
+import com.bitmotel.lanshuxiao.content.entity.Essays;
+import com.bitmotel.lanshuxiao.content.mapper.EssayMapper;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -31,4 +33,14 @@ class LanShuXiaoApplicationTests {
         userInfoList.forEach(System.out::println);
     }
 
+    @Autowired
+    EssayMapper essayMapper;
+    @Test
+    public void testEssayMapper() {
+        List<Essays> essaysInfoList = essayMapper.queryEssayByUser("123");
+        for (Essays essays : essaysInfoList) {
+            System.out.println(essays);
+        }
+        essaysInfoList = essayMapper.queryAllEssays();
+    }
 }

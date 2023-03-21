@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitmotel.lanshuxiao.content.mapper.EssayMapper">
+    <select id="queryEssayByUser" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays where author_id = (select user_id from Users where username = #{username})
+    </select>
+    <select id="queryAllEssays" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays
+    </select>
+    <select id="queryEssay" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays where passage_id = #{passage_id}
+    </select>
+    <select id="queryEssayByCategory" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays where category_id = (select category_id from categories where category_name = #{category})
+    </select>
+    <select id="queryEssayByCategoryId" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays where category_id = #{category_id}
+    </select>
+    <select id="queryEssayByPagination" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        select * from Essays limit #{limit} offset #{offset}
+    </select>
+    <insert id="insertEssay" parameterType="com.bitmotel.lanshuxiao.content.entity.Essays" useGeneratedKeys="true" keyProperty="passage_id">
+        insert into Essays(content, abs, title, author_id, category_id, published, createTime, updateTime, cover_photo)
+        values (#{content}, #{abs}, #{title}, #{author_id}, #{category_id}, #{published}, #{createTime}, #{updateTime}, #{cover_photo})
+    </insert>
+    <update id="updateEssay" parameterType="com.bitmotel.lanshuxiao.content.entity.Essays">
+        update Essays set content = #{content}, abs = #{abs}, title = #{title}, category_id = #{category_id},
+                          published = #{published}, updateTime = #{updateTime}, cover_photo = #{cover_photo}
+        where passage_id = #{passage_id}
+    </update>
+    <delete id="deleteEssay" parameterType="Integer">
+        delete from Essays where passage_id = #{passage_id}
+    </delete>
+</mapper>

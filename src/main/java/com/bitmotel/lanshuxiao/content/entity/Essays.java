@@ -23,5 +23,5 @@ public class Essays {
     private Integer category_id;
     private Time createTime;
     private Time updateTime;
-
+    private String cover_photo;
 }

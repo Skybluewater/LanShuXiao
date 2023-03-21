@@ -29,7 +29,6 @@ public class UserController {
         }
         if (oldUser.getPassword().equals(user.getPassword())) {
             session.setAttribute("userID", oldUser.getUser_id());
-            System.out.println(session.getAttribute("userID"));
             return Response.success(true);
         }
         throw new BusinessException("Password not matched");
