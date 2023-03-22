@@ -26,9 +26,9 @@ dependencies {
     // annotation starter
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.3'
     // session
-    //    implementation 'org.springframework.session:spring-session-core'
+    // implementation 'org.springframework.session:spring-session-core'
     // redis
-    //    implementation 'org.springframework.session:spring-session-data-redis'
+    // implementation 'org.springframework.session:spring-session-data-redis'
     // session + redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'

@@ -10,4 +10,6 @@ public interface UserServicesI {
     public Users queryByName(String username);
     public boolean update(Users user);
     public boolean delete(Users user);
+    public String queryNameById(Integer user_id);
+    public String queryIdByName(String username);
 }

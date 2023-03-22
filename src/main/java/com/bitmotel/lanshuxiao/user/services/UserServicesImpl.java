@@ -5,7 +5,6 @@ import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ import java.util.Optional;
 public class UserServicesImpl implements UserServicesI {
     @Autowired
     UserMapper userMapper;
-
     @Override
     public List<Users> queryAll() {
         return userMapper.queryAll();
@@ -56,5 +54,19 @@ public class UserServicesImpl implements UserServicesI {
         } catch (Exception e) {
             throw new BusinessException("Delete failed");
         }
+    }
+
+    @Override
+    public String queryNameById(Integer user_id) {
+        try {
+            return userMapper.queryNameById(user_id);
+        } catch (Exception e) {
+            throw new BusinessException("Query username by user_id failed");
+        }
+    }
+
+    @Override
+    public String queryIdByName(String username) {
+        return null;
     }
 }

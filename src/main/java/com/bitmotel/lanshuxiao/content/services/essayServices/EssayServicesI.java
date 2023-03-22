@@ -1,4 +1,4 @@
-package com.bitmotel.lanshuxiao.content.services;
+package com.bitmotel.lanshuxiao.content.services.essayServices;
 
 import com.bitmotel.lanshuxiao.content.entity.EssayEntity;
 

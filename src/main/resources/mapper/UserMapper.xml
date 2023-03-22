@@ -18,4 +18,10 @@
     <delete id="delete">
         delete from Users where username = #{username}
     </delete>
+    <select id="queryNameById">
+        select username from Users where user_id = #{user_id}
+    </select>
+    <select id="queryIdByName">
+        select user_id from Users where username = #{username}
+    </select>
 </mapper>
