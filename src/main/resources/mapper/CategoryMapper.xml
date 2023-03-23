@@ -9,10 +9,10 @@
     <select id="getCategoryByName" resultType="com.bitmotel.lanshuxiao.content.entity.Categories">
         select * from categories where category_name = #{category_name}
     </select>
-    <select id="getCategoryNameById">
+    <select id="getCategoryNameById" resultType="String">
         select category_name where category_id = #{category_id}
     </select>
-    <select id="getCategoryIdByName">
+    <select id="getCategoryIdByName" resultType="Integer">
         select category_id where category_name = #{category_name}
     </select>
 </mapper>

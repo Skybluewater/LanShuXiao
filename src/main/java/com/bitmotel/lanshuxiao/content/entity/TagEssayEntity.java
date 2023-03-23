@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagEssayMapper {
+public class TagEssayEntity {
     private Integer tag_id;
     private Integer passage_id;
 }

@@ -1,5 +1,6 @@
 package com.bitmotel.lanshuxiao.user.mapper;
 
+import com.bitmotel.lanshuxiao.user.entity.UserEntity;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,5 @@ public interface UserMapper {
     public boolean delete(Users userInfo);
     public String queryNameById(Integer user_id);
     public Integer queryIdByName(String username);
+    public UserEntity queryUserEntity(Integer user_id);
 }

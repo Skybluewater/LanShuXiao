@@ -18,7 +18,7 @@
     <select id="getTagByUserIdByUserName" resultType="com.bitmotel.lanshuxiao.content.entity.Tags">
         select * from Tags where user_id = #{user_id}, tag_name = #{tag_name}
     </select>
-    <select id="getTagIdByUserIdByTagName">
+    <select id="getTagIdByUserIdByTagName" resultType="Integer">
         select tag_id from Tags where user_id = #{user_id}, tag_name = #{tag_name}
     </select>
     <insert id="addTag" parameterType="com.bitmotel.lanshuxiao.content.entity.Tags" useGeneratedKeys="true" keyProperty="tag_id">

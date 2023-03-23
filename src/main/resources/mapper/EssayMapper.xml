@@ -9,11 +9,26 @@
     <select id="queryAllEssays" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
         select * from Essays
     </select>
+    <select id="queryAllEssaysPassageId" resultType="Integer">
+        select passage_id from Essays
+    </select>
     <select id="queryEssay" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
         select * from Essays where passage_id = #{passage_id}
     </select>
     <select id="queryEssayByCategory" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
         select * from Essays where category_id = (select category_id from categories where category_name = #{category})
+    </select>
+    <select id="queryPassageIdByUserEntity" resultType="Integer" parameterType="com.bitmotel.lanshuxiao.user.entity.UserEntity">
+        select passage_id from Essays where author_id = #{user_id}
+    </select>
+    <select id="queryPassageIdByUserId" resultType="Integer">
+        select passage_id from Essays where author_id = #{user_id}
+    </select>
+    <select id="queryPassageIdByCategories" parameterType="com.bitmotel.lanshuxiao.content.entity.Categories" resultType="Integer">
+        select passage_id from Essays where category_id = #{category_id}
+    </select>
+    <select id="queryPassageIdByCategoryId" resultType="Integer">
+        select passage_id from Essays where category_id = #{category_id}
     </select>
     <select id="queryEssayByCategoryId" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
         select * from Essays where category_id = #{category_id}

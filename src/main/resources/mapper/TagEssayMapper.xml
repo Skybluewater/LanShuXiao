@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitmotel.lanshuxiao.content.mapper.TagEssayMapper">
+    <select id="getAll" resultType="com.bitmotel.lanshuxiao.content.entity.TagEssayEntity">
+        select * from tagessaymapper
+    </select>
+    <insert id="insertTagEssayMapper">
+        insert into tagessaymapper(tag_id, passage_id) values (#{tag_id}, #{passage_id})
+    </insert>
+    <select id="getPassageIdByTagId" resultType="Integer">
+        select passage_id from tagessaymapper where tag_id = #{tag_id}
+    </select>
+    <select id="getTagIdByPassageId" resultType="Integer">
+        select tag_id from tagessaymapper where passage_id = #{passage_id}
+    </select>
+    <delete id="deleteTagEssayMapper">
+        delete from tagessaymapper where tag_id = #{tag_id} and passage_id = #{pasasge_id}
+    </delete>
+</mapper>

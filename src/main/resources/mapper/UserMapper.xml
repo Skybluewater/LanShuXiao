@@ -18,10 +18,13 @@
     <delete id="delete">
         delete from Users where username = #{username}
     </delete>
-    <select id="queryNameById">
+    <select id="queryNameById" resultType="String">
         select username from Users where user_id = #{user_id}
     </select>
-    <select id="queryIdByName">
+    <select id="queryIdByName" resultType="Integer">
         select user_id from Users where username = #{username}
+    </select>
+    <select id="queryUserEntity" resultType="com.bitmotel.lanshuxiao.user.entity.UserEntity">
+        select user_id, username from Users where user_id = #{user_id}
     </select>
 </mapper>

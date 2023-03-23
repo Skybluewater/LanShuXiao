@@ -1,6 +1,7 @@
 package com.bitmotel.lanshuxiao.user.services;
 
 import com.bitmotel.lanshuxiao.exception.BusinessException;
+import com.bitmotel.lanshuxiao.user.entity.UserEntity;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class UserServicesImpl implements UserServicesI {
             return user.get();
         }
         throw new BusinessException("Query failed");
+    }
+
+    @Override
+    public UserEntity queryUserEntity(Integer id) {
+        try {
+            return userMapper.queryUserEntity(id);
+        } catch (Exception e) {
+            throw new BusinessException("Query User Entity failed");
+        }
     }
 
     @Override

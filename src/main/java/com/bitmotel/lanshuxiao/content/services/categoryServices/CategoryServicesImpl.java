@@ -13,6 +13,9 @@ public class CategoryServicesImpl implements CategoryServicesI {
     CategoryMapper categoryMapper;
     @Override
     public Categories getCategory(Integer id) {
+        if (id == null) {
+            return null;
+        }
         try {
             return categoryMapper.getCategory(id);
         } catch (Exception e) {

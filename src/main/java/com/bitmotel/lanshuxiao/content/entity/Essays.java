@@ -24,4 +24,17 @@ public class Essays {
     private Time createTime;
     private Time updateTime;
     private String cover_photo;
+
+    public Essays(EssayEntity entity) {
+        passage_id = entity.getPassage_id();
+        content = entity.getContent();
+        abs = entity.getAbs();
+        title = entity.getTitle();
+        author_id = entity.getUser().getUser_id();
+        published = entity.getPublished();
+        category_id = entity.getCategory().getCategory_id();
+        createTime = entity.getCreateTime();
+        updateTime = entity.getUpdateTime();
+        cover_photo = entity.getCover_photo();
+    }
 }
