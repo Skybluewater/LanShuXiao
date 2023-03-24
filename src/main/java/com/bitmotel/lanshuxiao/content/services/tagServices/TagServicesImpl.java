@@ -28,10 +28,7 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
             throw new BusinessException("No tag id parsed");
         }
         Tags tg = tagMapper.getTag(tag.getTag_id());
-        if (!Objects.equals(tg.getUser_id(), user_id)) {
-            throw new PermissionException("Trying to modify other one's tag");
-        }
-        return true;
+        return Objects.equals(tg.getUser_id(), user_id);
     }
 
     @Override
