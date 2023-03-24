@@ -81,6 +81,9 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
     public Object delete(Object data) {
         EssayEntity essayEntity = (EssayEntity) data;
         EssayEntity oldEssayEntity = (EssayEntity) query(essayEntity.getPassage_id());
+        if (oldEssayEntity == null) {
+            throw new BusinessException("Essay to be deleted do not exist in database");
+        }
         if (oldEssayEntity != null && !Objects.equals(oldEssayEntity.getUser().getUser_id(), essayEntity.getUser().getUser_id())) {
             throw new PermissionException("Trying to delete other one's essay");
         }

@@ -5,6 +5,7 @@ import com.bitmotel.lanshuxiao.content.entity.Tags;
 import com.bitmotel.lanshuxiao.content.mapper.TagMapper;
 import com.bitmotel.lanshuxiao.content.services.EditableI;
 import com.bitmotel.lanshuxiao.exception.BusinessException;
+import com.bitmotel.lanshuxiao.exception.PermissionException;
 import com.bitmotel.lanshuxiao.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Service("TagService")
@@ -21,7 +23,15 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
 
     @Override
     public Object queryByObjectByUserId(Object data, Integer user_id) {
-        return null;
+        TagEntity tag = (TagEntity) data;
+        if (tag.getTag_id() == null) {
+            throw new BusinessException("No tag id parsed");
+        }
+        Tags tg = tagMapper.getTag(tag.getTag_id());
+        if (!Objects.equals(tg.getUser_id(), user_id)) {
+            throw new PermissionException("Trying to modify other one's tag");
+        }
+        return true;
     }
 
     @Override

@@ -1,19 +1,24 @@
 package com.bitmotel.lanshuxiao.content.controller;
 
+import com.bitmotel.lanshuxiao.annotation.LoginRequired;
 import com.bitmotel.lanshuxiao.content.entity.Categories;
 import com.bitmotel.lanshuxiao.content.entity.EssayEntity;
 import com.bitmotel.lanshuxiao.content.entity.TagEntity;
 import com.bitmotel.lanshuxiao.content.services.EditableI;
 import com.bitmotel.lanshuxiao.content.services.categoryServices.CategoryServicesI;
 import com.bitmotel.lanshuxiao.content.services.categoryServices.CategoryServicesImpl;
+import com.bitmotel.lanshuxiao.exception.PermissionException;
 import com.bitmotel.lanshuxiao.response.Response;
 import com.bitmotel.lanshuxiao.user.entity.UserEntity;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class ContentController {
@@ -72,8 +77,8 @@ public class ContentController {
             @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit
     ) {
         return Response.success(new HashMap<>(){{
-//            put("tagEntities", (List<TagEntity>) tagService.queryByObject(user));
-            put("tagEntities", (List<TagEntity>) tagService.queryByUserId(user.getUser_id()));
+            put("tagEntities", (List<TagEntity>) tagService.queryByObject(user));
+//            put("tagEntities", (List<TagEntity>) tagService.queryByUserId(user.getUser_id()));
             put("essayEntities", (List<EssayEntity>) essayService.queryByObject(user, offset, limit));
         }});
     }
@@ -102,6 +107,82 @@ public class ContentController {
     ) {
         return Response.success(new HashMap<>() {{
             put("essayEntities", (List<EssayEntity>) essayService.queryByObject(tag, offset, limit));
+        }});
+    }
+
+    @PostMapping("essay/delete")
+    @ResponseBody
+    @LoginRequired
+    public Response<Boolean> deleteEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
+        Object user_id = httpSession.getAttribute("user_id");
+        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+            throw new PermissionException("Update essay request rejected");
+        }
+        return Response.success((Boolean) essayService.delete(essay));
+    }
+
+    @PostMapping("essay/update")
+    @ResponseBody
+    @LoginRequired
+    public Response<HashMap<String, EssayEntity>> updateEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
+        Object user_id = httpSession.getAttribute("user_id");
+        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+            throw new PermissionException("Update essay request rejected");
+        }
+        return Response.success(new HashMap<>() {{
+            put("essayEntity", (EssayEntity) essayService.update(essay));
+        }});
+    }
+
+    @PostMapping("essay/create")
+    @ResponseBody
+    @LoginRequired
+    public Response<HashMap<String, EssayEntity>> createEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
+        Object user_id = httpSession.getAttribute("user_id");
+        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+            throw new PermissionException("Create essay request rejected");
+        }
+        return Response.success(new HashMap<>() {{
+            put("essayEntity", (EssayEntity) essayService.create(essay));
+        }});
+    }
+
+    @PostMapping("essay/tag/create")
+    @ResponseBody
+    @LoginRequired
+    public Response<HashMap<String, Object>> createTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
+        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        tagService.create(tag, user_id);
+        return Response.success(new HashMap<>() {{
+            put("essayEntity", (List<TagEntity>) tagService.queryByUserId(user_id));
+        }});
+    }
+
+    @PostMapping("essay/tag/update")
+    @ResponseBody
+    @LoginRequired
+    public Response<HashMap<String, Object>> updateTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
+        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        if (!(Boolean) tagService.queryByObjectByUserId(tag, user_id)) {
+            throw new PermissionException("Trying to update other one's tag");
+        }
+        tagService.update(tag);
+        return Response.success(new HashMap<>() {{
+            put("essayEntity", (List<TagEntity>) tagService.queryByUserId(user_id));
+        }});
+    }
+
+    @PostMapping("essay/tag/delete")
+    @ResponseBody
+    @LoginRequired
+    public Response<HashMap<String, Object>> deleteTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
+        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        if (!(Boolean) tagService.queryByObjectByUserId(tag, user_id)) {
+            throw new PermissionException("Trying to delete other one's tag");
+        }
+        tagService.delete(tag);
+        return Response.success(new HashMap<>() {{
+            put("essayEntity", (List<TagEntity>) tagService.queryByUserId(user_id));
         }});
     }
 }
