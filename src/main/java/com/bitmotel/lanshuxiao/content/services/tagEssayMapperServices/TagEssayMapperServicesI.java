@@ -7,4 +7,5 @@ public interface TagEssayMapperServicesI {
     public void unmapEssayWithTag(Integer tag_id, Integer passage_id);
     public List<Integer> getTagIdByPassageId(Integer passage_id);
     public List<Integer> getPassageIdByTagId(Integer tag_id);
+    public List<Integer> getPassageIdByTagId(Integer tag_id, Integer offset, Integer limit);
 }

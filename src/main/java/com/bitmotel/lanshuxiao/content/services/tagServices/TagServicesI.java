@@ -12,5 +12,6 @@ public interface TagServicesI {
     public List<TagEntity> getTagByUserIdByTagName(Integer user_id, String tag_name);
     public Integer getTagIdByUserIdByTagName(Integer user_id, String tag_name);
     public TagEntity addTag(TagEntity tag, Integer user_id);
+    public TagEntity updateTag(TagEntity tag);
     public boolean deleteTag(Integer tag_id);
 }

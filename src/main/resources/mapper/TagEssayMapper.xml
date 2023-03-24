@@ -15,6 +15,9 @@
     <select id="getTagIdByPassageId" resultType="Integer">
         select tag_id from tagessaymapper where passage_id = #{passage_id}
     </select>
+    <select id="getPassageIdByTagIdWithPagination" resultType="Integer">
+        select passage_id from tagessaymapper where tag_id = #{tag_id} order by passage_id ASC limit #{limit} offset #{offset}
+    </select>
     <delete id="deleteTagEssayMapper">
         delete from tagessaymapper where tag_id = #{tag_id} and passage_id = #{pasasge_id}
     </delete>

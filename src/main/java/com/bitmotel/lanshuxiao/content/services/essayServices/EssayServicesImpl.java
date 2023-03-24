@@ -130,10 +130,21 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
     }
 
     @Override
+    public List<Integer> queryAllPassageId() {
+        try {
+            return essayMapper.queryAllEssaysPassageId();
+        } catch (Exception e) {
+            throw new BusinessException("Query all passage_id failed");
+        }
+    }
+
+    @Override
     public List<?> queryByObject(Object data) {
         List<EssayEntity> essayEntities = new ArrayList<>();
         List<Integer> passage_id_list = null;
-        if (data instanceof TagEntity) {
+        if (data == null) {
+            passage_id_list = queryAllPassageId();
+        } else if (data instanceof TagEntity) {
             passage_id_list = tagEssayMapper.getPassageIdByTagId(((TagEntity) data).getTag_id());
         } else if (data instanceof Categories) {
             passage_id_list = queryPassageIdByCategory((Categories) data);
@@ -149,13 +160,122 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
     }
 
     @Override
+    public List<Integer> queryPassageIdByCategoryIdByUserId(Integer category_id, Integer user_id) {
+        try {
+            return essayMapper.queryPassageIdByCategoryIdByUserId(category_id, user_id);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id by category_id by user_id failed");
+        }
+    }
+
+    @Override
+    public List<Integer> queryPassageIdByCategoryIdByUserIdWithPagination(Integer category_id, Integer user_id, Integer offset, Integer limit) {
+        try {
+            return essayMapper.queryPassageIdByCategoryIdByUserIdWithPagination(category_id, user_id, offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id by category_id by user_id with pagination failed");
+        }
+    }
+
+    @Override
+    public List<?> queryByObjectByUserId(Object data, Integer user_id) {
+        List<EssayEntity> essayEntities = new ArrayList<>();
+        List<Integer> passage_id_list = null;
+        if (data == null) {
+            return queryByObject(new UserEntity(user_id, null));
+        } else if (data instanceof Categories) {
+            passage_id_list = queryPassageIdByCategoryIdByUserId(((Categories) data).getCategory_id(), user_id);
+        }
+        if (passage_id_list != null) {
+            for (Integer passage_id: passage_id_list) {
+                essayEntities.add((EssayEntity) query(passage_id));
+            }
+        }
+        return essayEntities;
+    }
+
+    @Override
+    public List<?> queryByObjectByUserId(Object data, Integer user_id, Integer offset, Integer limit) {
+        List<EssayEntity> essayEntities = new ArrayList<>();
+        List<Integer> passage_id_list = null;
+        if (data == null) {
+            return queryByObject(new UserEntity(user_id, null), offset, limit);
+        } else if (data instanceof Categories) {
+            passage_id_list = queryPassageIdByCategoryIdByUserIdWithPagination(((Categories) data).getCategory_id(), user_id, offset, limit);
+        }
+        if (passage_id_list != null) {
+            for (Integer passage_id: passage_id_list) {
+                essayEntities.add((EssayEntity) query(passage_id));
+            }
+        }
+        return essayEntities;
+    }
+
+    @Override
     public Object queryByUserId(Integer user_id) {
         return queryByObject(new UserEntity(user_id, null));
     }
 
     @Override
-    public Object queryByPagination(Object data, Integer offset, Integer limit) {
-        return null;
+    public List<Integer> queryAllPassageIdWithPagination(Integer offset, Integer limit) {
+        try {
+            return essayMapper.queryAllPassageIdWithPagination(offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id with pagination failed");
+        }
+    }
+
+    @Override
+    public List<Integer> queryPassageIdByUserIdWithPagination(Integer user_id, Integer offset, Integer limit) {
+        try {
+            return essayMapper.queryPassageIdByUserIdWithPagination(user_id, offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id by user_id with pagination failed");
+        }
+    }
+
+    @Override
+    public List<Integer> queryPassageIdByUserEntityWithPagination(UserEntity entity, Integer offset, Integer limit) {
+        try {
+            return queryPassageIdByUserIdWithPagination(entity.getUser_id(), offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id by user_entity with pagination failed");
+        }
+    }
+
+    @Override
+    public List<Integer> queryPassageIdByCategoryIdWithPagination(Integer category_id, Integer offset, Integer limit) {
+        try {
+            return essayMapper.queryPassageIdByCategoryIdWithPagination(category_id, offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Query passage_id by category_id with pagination failed");
+        }
+    }
+
+    @Override
+    public List<Integer> queryPassageIdByCategoriesWithPagination(Categories category, Integer offset, Integer limit) {
+        return queryPassageIdByCategoryIdWithPagination(category.getCategory_id(), offset, limit);
+    }
+    // TODO
+    @Override
+    public List<?> queryByObject(Object data, Integer offset, Integer limit) {
+        List<EssayEntity> essayEntities = new ArrayList<>();
+        List<Integer> passage_id_list = null;
+        if (data == null) {
+            passage_id_list = queryAllPassageIdWithPagination(offset, limit);
+        } else if (data instanceof TagEntity) {
+            passage_id_list = tagEssayMapper.getPassageIdByTagId(((TagEntity) data).getTag_id(), offset, limit);
+        } else if (data instanceof Categories) {
+            passage_id_list = queryPassageIdByCategoriesWithPagination((Categories) data, offset, limit);
+        } else if (data instanceof UserEntity) {
+            passage_id_list = queryPassageIdByUserEntityWithPagination((UserEntity) data, offset, limit);
+        }
+        if (passage_id_list != null) {
+            for (Integer passage_id: passage_id_list) {
+                essayEntities.add((EssayEntity) query(passage_id));
+            }
+        }
+        return essayEntities;
     }
 
     @Override
@@ -165,21 +285,6 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         } catch (Exception e) {
             throw new BusinessException("Query essay failed");
         }
-    }
-
-    @Override
-    public List<EssayEntity> queryAllEssays() {
-        List<Integer> passage_ids = essayMapper.queryAllEssaysPassageId();
-        List<EssayEntity> essayEntities = new ArrayList<>();
-        for (Integer passage_id: passage_ids) {
-            essayEntities.add((EssayEntity) query(passage_id));
-        }
-        return essayEntities;
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByUser(String username) {
-        return null;
     }
 
     @Override
@@ -198,31 +303,6 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         } catch (Exception e) {
             throw new BusinessException("Query passage_id by user_id failed");
         }
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByPagination(Integer limit, Integer offset) {
-        return null;
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByUserByTag(Integer tag_id, String username) {
-        return null;
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByUserByCategory(String category, String username) {
-        return null;
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByUserByCategoryId(Integer category_id, String username) {
-        return null;
-    }
-
-    @Override
-    public List<EssayEntity> queryEssayByUserByPagination(Integer limit, Integer offset, String username) {
-        return null;
     }
 
     @Override

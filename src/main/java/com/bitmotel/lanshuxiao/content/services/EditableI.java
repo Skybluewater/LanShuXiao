@@ -7,6 +7,8 @@ public interface EditableI<T> {
     public Object update(T data);
     public Object query(Integer id);
     public Object queryByObject(T data);
+    public Object queryByObject(T data, Integer offset, Integer limit);
     public Object queryByUserId(Integer user_id);
-    public Object queryByPagination(T data, Integer offset, Integer limit);
+    public Object queryByObjectByUserId(T data, Integer user_id);
+    public Object queryByObjectByUserId(T data, Integer user_id, Integer offset, Integer limit);
 }

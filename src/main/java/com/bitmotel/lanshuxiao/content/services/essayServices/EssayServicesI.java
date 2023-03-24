@@ -8,15 +8,16 @@ import java.util.List;
 
 public interface EssayServicesI {
     public Essays queryEssay(Integer passage_id);
-    public List<EssayEntity> queryAllEssays();
-    public List<EssayEntity> queryEssayByUser(String username);
     public List<Integer> queryPassageIdByCategory(Categories Categories);
     public List<Integer> queryPassageIdByUserEntity(UserEntity UserEntity);
-    public List<EssayEntity> queryEssayByPagination(Integer limit, Integer offset);
-    public List<EssayEntity> queryEssayByUserByTag(Integer tag_id, String username);
-    public List<EssayEntity> queryEssayByUserByCategory(String category, String username);
-    public List<EssayEntity> queryEssayByUserByCategoryId(Integer category_id, String username);
-    public List<EssayEntity> queryEssayByUserByPagination(Integer limit, Integer offset, String username);
+    public List<Integer> queryAllPassageId();
+    public List<Integer> queryAllPassageIdWithPagination(Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByUserIdWithPagination(Integer user_id, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByUserEntityWithPagination(UserEntity entity, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByCategoryIdWithPagination(Integer category_id, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByCategoriesWithPagination(Categories category, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByCategoryIdByUserId(Integer category_id, Integer user_id);
+    public List<Integer> queryPassageIdByCategoryIdByUserIdWithPagination(Integer category_id, Integer user_id, Integer offset, Integer limit);
     public Essays insertEssay(EssayEntity essay);
     public Essays updateEssay(EssayEntity essay);
     public boolean deleteEssay(Integer passage_id);

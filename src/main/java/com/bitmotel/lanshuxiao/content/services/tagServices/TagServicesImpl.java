@@ -19,6 +19,16 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
     TagMapper tagMapper;
 
     @Override
+    public Object queryByObjectByUserId(TagEntity data, Integer user_id) {
+        return null;
+    }
+
+    @Override
+    public Object queryByObjectByUserId(TagEntity data, Integer user_id, Integer offset, Integer limit) {
+        return null;
+    }
+
+    @Override
     public TagEntity getTag(Integer tag_id) {
         try {
             return new TagEntity(tagMapper.getTag(tag_id));
@@ -62,6 +72,15 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
             return tagMapper.getTagIdByUserIdByTagName(user_id, tag_name);
         } catch (Exception e) {
             throw new BusinessException("Tag query failed");
+        }
+    }
+
+    @Override
+    public TagEntity updateTag(TagEntity tag) {
+        try {
+            return new TagEntity(tagMapper.updateTag(new Tags(tag.getTag_id(), null, tag.getTag_name())));
+        } catch (Exception e) {
+            throw new BusinessException("Tag update failed");
         }
     }
 
@@ -111,7 +130,7 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
 
     @Override
     public Object update(TagEntity data) {
-        return null;
+        return updateTag(data);
     }
 
     @Override
@@ -130,7 +149,7 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
     }
 
     @Override
-    public Object queryByPagination(TagEntity data, Integer offset, Integer limit) {
+    public Object queryByObject(TagEntity data, Integer offset, Integer limit) {
         return null;
     }
 }

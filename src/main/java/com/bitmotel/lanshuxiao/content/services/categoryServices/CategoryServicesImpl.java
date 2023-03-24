@@ -6,11 +6,23 @@ import com.bitmotel.lanshuxiao.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Repository
 @Service("CategoryService")
 public class CategoryServicesImpl implements CategoryServicesI {
     @Autowired
     CategoryMapper categoryMapper;
+    @Override
+    public List<Categories> getAllCategories() {
+        try {
+            return categoryMapper.getAllCategories();
+        } catch (Exception e) {
+            throw new BusinessException("No categories available");
+        }
+    }
+
     @Override
     public Categories getCategory(Integer id) {
         if (id == null) {

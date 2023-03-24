@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -57,6 +58,23 @@ class LanShuXiaoApplicationTests {
         System.out.println(passage_ids);
         passage_ids = essayMapper.queryPassageIdByUserEntity(new UserEntity(1, "123"));
         System.out.println(passage_ids);
+    }
+
+    @Test
+    public void testEssayMapperWithPagination() {
+        List<Integer> passage_ids = essayMapper.queryAllPassageIdWithPagination(0, 10);
+        System.out.println(passage_ids);
+        passage_ids = essayMapper.queryPassageIdByUserIdWithPagination(1, 0, 10);
+        System.out.println(passage_ids);
+        passage_ids = essayMapper.queryPassageIdByUserEntityWithPaginationTest(new HashMap<>(){{
+            put("author_id", 1);
+            put("limit", 10);
+            put("offset", 10);
+        }});
+        System.out.println(passage_ids);
+        // these will cause error for mybatis can't resolve parameter type mixed with class or basic data types
+//        passage_ids = essayMapper.queryPassageIdByUserEntityWithPagination(new UserEntity(1, "123"), 0, 10);
+//        System.out.println(passage_ids);
     }
 
     @Autowired

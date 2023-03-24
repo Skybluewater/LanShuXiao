@@ -49,4 +49,13 @@ public class TagEssayMapperServicesImpl implements TagEssayMapperServicesI {
             throw new BusinessException("Get passage_id by tag_id failed");
         }
     }
+
+    @Override
+    public List<Integer> getPassageIdByTagId(Integer tag_id, Integer offset, Integer limit) {
+        try {
+            return tagEssayMapper.getPassageIdByTagIdWithPagination(tag_id, offset, limit);
+        } catch (Exception e) {
+            throw new BusinessException("Get passage_id by tag_id with pagination failed");
+        }
+    }
 }

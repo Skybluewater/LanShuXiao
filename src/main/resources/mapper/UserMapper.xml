@@ -12,8 +12,8 @@
     <select id="queryByName" resultType="com.bitmotel.lanshuxiao.user.entity.Users">
         select * from Users where username = #{username}
     </select>
-    <update id="update">
-
+    <update id="update" parameterType="com.bitmotel.lanshuxiao.user.entity.Users">
+        update Users set username = #{username}, password = #{password}, email = #{email}, avatar = #{avatar}, sex = #{sex}, updateTime = #{updateTime} where user_id = #{user_id}
     </update>
     <delete id="delete">
         delete from Users where username = #{username}

@@ -24,6 +24,9 @@
     <insert id="addTag" parameterType="com.bitmotel.lanshuxiao.content.entity.Tags" useGeneratedKeys="true" keyProperty="tag_id">
         insert into Tags(user_id, tag_id) values (#{user_id}, #{tag_id})
     </insert>
+    <update id="updateTag" parameterType="com.bitmotel.lanshuxiao.content.entity.Tags">
+        update Tags set tag_name = #{tag_name} where tag_id = #{tag_id}
+    </update>
     <delete id="deleteTag">
         delete from Tags where tag_id = #{tag_id}
     </delete>

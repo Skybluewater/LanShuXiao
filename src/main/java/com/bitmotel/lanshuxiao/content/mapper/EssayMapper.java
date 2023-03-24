@@ -6,6 +6,7 @@ import com.bitmotel.lanshuxiao.user.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -30,6 +31,16 @@ public interface EssayMapper {
     public List<Integer> queryPassageIdByUserId(Integer user_id);
     public List<Integer> queryPassageIdByCategories(Categories category);
     public List<Integer> queryPassageIdByCategoryId(Integer category_id);
+    // TODO: query by pagination
+    public List<Integer> queryAllPassageIdWithPagination(Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByUserIdWithPagination(Integer user_id, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByCategoryIdByUserId(Integer category_id, Integer user_id);
+    public List<Integer> queryPassageIdByCategoryIdByUserIdWithPagination(Integer category_id, Integer user_id, Integer offset, Integer limit);
+    // TODO: remove this test
+    public List<Integer> queryPassageIdByUserEntityWithPaginationTest(HashMap<String, Object> map);
+    // public List<Integer> queryPassageIdByUserEntityWithPagination(UserEntity entity, Integer offset, Integer limit);
+    public List<Integer> queryPassageIdByCategoryIdWithPagination(Integer category_id, Integer offset, Integer limit);
+    //    public List<Integer> queryPassageIdByCategoriesWithPagination(Categories category, Integer offset, Integer limit);
     public Essays insertEssay(Essays essay);
     public Essays updateEssay(Essays essay);
     public boolean deleteEssay(Integer passage_id);

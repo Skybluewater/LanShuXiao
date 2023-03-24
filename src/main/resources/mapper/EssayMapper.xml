@@ -33,9 +33,28 @@
     <select id="queryEssayByCategoryId" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
         select * from Essays where category_id = #{category_id}
     </select>
+    <!-- query by pagination implementation -->
     <select id="queryEssayByPagination" resultType="com.bitmotel.lanshuxiao.content.entity.Essays">
-        select * from Essays limit #{limit} offset #{offset}
+        select * from Essays order by passage_id DESC limit #{limit} offset #{offset}
     </select>
+    <select id="queryAllPassageIdWithPagination" resultType="Integer">
+        select passage_id from Essays order by passage_id DESC limit #{limit} offset #{offset}
+    </select>
+    <select id="queryPassageIdByUserIdWithPagination" resultType="Integer">
+        select passage_id from Essays where author_id = #{user_id} order by passage_id DESC limit #{limit} offset #{offset}
+    </select>
+    <select id="queryPassageIdByCategoryIdWithPagination" resultType="Integer">
+        select passage_id from Essays where category_id = #{category_id} order by passage_id DESC limit #{limit} offset #{offset}
+    </select>
+    <select id="queryPassageIdByCategoryIdByUserId" resultType="Integer">
+        select passage_id from Essays where category_id = #{category_id} and author_id = #{user_id} order by passage_id limit #{limit} offset #{offset}
+    </select>
+
+    <!-- TODO remove this test -->
+    <select id="queryPassageIdByUserEntityWithPaginationTest" parameterType="HashMap" resultType="Integer">
+        select passage_id from Essays where author_id = #{author_id} order by passage_id DESC limit #{limit} offset #{offset}
+    </select>
+    <!--  insert update and delete implementation -->
     <insert id="insertEssay" parameterType="com.bitmotel.lanshuxiao.content.entity.Essays" useGeneratedKeys="true" keyProperty="passage_id">
         insert into Essays(content, abs, title, author_id, category_id, published, createTime, updateTime, cover_photo)
         values (#{content}, #{abs}, #{title}, #{author_id}, #{category_id}, #{published}, #{createTime}, #{updateTime}, #{cover_photo})
