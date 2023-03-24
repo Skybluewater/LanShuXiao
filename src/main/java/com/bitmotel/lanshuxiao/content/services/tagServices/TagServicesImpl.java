@@ -145,7 +145,7 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
 
     @Override
     public Object queryByUserId(Integer user_id) {
-        return null;
+        return getTagsByUserId(user_id);
     }
 
     @Override
