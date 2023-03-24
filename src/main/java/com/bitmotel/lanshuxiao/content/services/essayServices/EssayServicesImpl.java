@@ -3,7 +3,7 @@ package com.bitmotel.lanshuxiao.content.services.essayServices;
 import com.bitmotel.lanshuxiao.content.entity.*;
 import com.bitmotel.lanshuxiao.content.mapper.EssayMapper;
 import com.bitmotel.lanshuxiao.content.services.EditableI;
-import com.bitmotel.lanshuxiao.content.services.categoryServices.CategoryServicesImpl;
+import com.bitmotel.lanshuxiao.content.services.categoryServices.CategoryServicesI;
 import com.bitmotel.lanshuxiao.content.services.tagEssayMapperServices.TagEssayMapperServicesI;
 import com.bitmotel.lanshuxiao.exception.BusinessException;
 import com.bitmotel.lanshuxiao.exception.PermissionException;
@@ -28,12 +28,23 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
     TagEssayMapperServicesI tagEssayMapper;
 
     @Autowired
-    @Qualifier("CategoryService")
-    CategoryServicesImpl categoryServices;
+    CategoryServicesI categoryServices;
+
+    @Override
+    public Object query() {
+        List<EssayEntity> essayEntities = new ArrayList<>();
+        List<Integer> passage_id_list = queryAllPassageId();
+        if (passage_id_list != null) {
+            for (Integer passage_id: passage_id_list) {
+                essayEntities.add((EssayEntity) query(passage_id));
+            }
+        }
+        return essayEntities;
+    }
 
     @Autowired
     @Qualifier("TagService")
-    EditableI<TagEntity> tagServices;
+    EditableI<Object> tagServices;
 
     @Autowired
     UserServicesI userServicesI;
@@ -127,6 +138,18 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         // get user entity
         UserEntity user = userServicesI.queryUserEntity(essay.getAuthor_id());
         return new EssayEntity(essay, tags, category, user);
+    }
+
+    @Override
+    public Object query(Integer offset, Integer limit) {
+        List<EssayEntity> essayEntities = new ArrayList<>();
+        List<Integer> passage_id_list = queryAllPassageIdWithPagination(offset, limit);
+        if (passage_id_list != null) {
+            for (Integer passage_id: passage_id_list) {
+                essayEntities.add((EssayEntity) query(passage_id));
+            }
+        }
+        return essayEntities;
     }
 
     @Override
@@ -332,4 +355,5 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         }
     }
 }
+
 

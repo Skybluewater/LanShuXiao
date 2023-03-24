@@ -58,6 +58,8 @@ class LanShuXiaoApplicationTests {
         System.out.println(passage_ids);
         passage_ids = essayMapper.queryPassageIdByUserEntity(new UserEntity(1, "123"));
         System.out.println(passage_ids);
+        passage_ids = essayMapper.queryPassageIdByCategoryIdByUserIdWithPagination(1, 1, 0, 10);
+        System.out.println(passage_ids);
     }
 
     @Test

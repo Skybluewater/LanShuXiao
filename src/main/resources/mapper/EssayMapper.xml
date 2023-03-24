@@ -47,9 +47,11 @@
         select passage_id from Essays where category_id = #{category_id} order by passage_id DESC limit #{limit} offset #{offset}
     </select>
     <select id="queryPassageIdByCategoryIdByUserId" resultType="Integer">
+        select passage_id from Essays where category_id = #{category_id} and author_id = #{user_id} order by passage_id
+    </select>
+    <select id="queryPassageIdByCategoryIdByUserIdWithPagination" resultType="Integer">
         select passage_id from Essays where category_id = #{category_id} and author_id = #{user_id} order by passage_id limit #{limit} offset #{offset}
     </select>
-
     <!-- TODO remove this test -->
     <select id="queryPassageIdByUserEntityWithPaginationTest" parameterType="HashMap" resultType="Integer">
         select passage_id from Essays where author_id = #{author_id} order by passage_id DESC limit #{limit} offset #{offset}

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Repository
-@Service("CategoryService")
+@Service
 public class CategoryServicesImpl implements CategoryServicesI {
     @Autowired
     CategoryMapper categoryMapper;

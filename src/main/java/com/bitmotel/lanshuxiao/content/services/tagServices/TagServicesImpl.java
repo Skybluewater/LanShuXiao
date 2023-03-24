@@ -5,6 +5,7 @@ import com.bitmotel.lanshuxiao.content.entity.Tags;
 import com.bitmotel.lanshuxiao.content.mapper.TagMapper;
 import com.bitmotel.lanshuxiao.content.services.EditableI;
 import com.bitmotel.lanshuxiao.exception.BusinessException;
+import com.bitmotel.lanshuxiao.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.List;
 
 @Repository
 @Service("TagService")
-public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
+public class TagServicesImpl implements TagServicesI, EditableI<Object> {
     @Autowired
     TagMapper tagMapper;
 
     @Override
-    public Object queryByObjectByUserId(TagEntity data, Integer user_id) {
+    public Object queryByObjectByUserId(Object data, Integer user_id) {
         return null;
     }
 
     @Override
-    public Object queryByObjectByUserId(TagEntity data, Integer user_id, Integer offset, Integer limit) {
+    public Object queryByObjectByUserId(Object data, Integer user_id, Integer offset, Integer limit) {
         return null;
     }
 
@@ -104,33 +105,40 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
     }
 
     @Override
-    public Object create(TagEntity data) {
+    public Object create(Object data) {
         return null;
     }
 
     @Override
-    public Object create(TagEntity data, Integer user_id) {
+    public Object create(Object data, Integer user_id) {
+        TagEntity tagEntity = (TagEntity) data;
         // check if tag with id
-        if (data.getTag_id() != null) {
-            return data;
+        if (tagEntity.getTag_id() != null) {
+            return tagEntity;
         }
         // check if tag without id already in database
-        Tags tag = tagMapper.getTagByUserIdByTagName(user_id, data.getTag_name());
+        Tags tag = tagMapper.getTagByUserIdByTagName(user_id, tagEntity.getTag_name());
         if (tag != null) {
             return new TagEntity(tag);
         }
-        return addTag(data, user_id);
+        return addTag(tagEntity, user_id);
     }
 
     // return boolean
     @Override
-    public Object delete(TagEntity data) {
-        return deleteTag(data.getTag_id());
+    public Object delete(Object data) {
+        TagEntity tagEntity = (TagEntity) data;
+        return deleteTag(tagEntity.getTag_id());
     }
 
     @Override
-    public Object update(TagEntity data) {
-        return updateTag(data);
+    public Object update(Object data) {
+        return updateTag((TagEntity) data);
+    }
+
+    @Override
+    public Object query() {
+        return null;
     }
 
     @Override
@@ -139,7 +147,17 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
     }
 
     @Override
-    public Object queryByObject(TagEntity data) {
+    public Object query(Integer offset, Integer limit) {
+        return null;
+    }
+
+    @Override
+    public Object queryByObject(Object data) {
+        if (data instanceof TagEntity tagEntity) {
+            return query(tagEntity.getTag_id());
+        } else if (data instanceof UserEntity user) {
+            return queryByUserId(user.getUser_id());
+        }
         return null;
     }
 
@@ -149,7 +167,7 @@ public class TagServicesImpl implements TagServicesI, EditableI<TagEntity> {
     }
 
     @Override
-    public Object queryByObject(TagEntity data, Integer offset, Integer limit) {
+    public Object queryByObject(Object data, Integer offset, Integer limit) {
         return null;
     }
 }
