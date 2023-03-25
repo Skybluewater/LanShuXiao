@@ -19,6 +19,6 @@
         select passage_id from tagessaymapper where tag_id = #{tag_id} order by passage_id ASC limit #{limit} offset #{offset}
     </select>
     <delete id="deleteTagEssayMapper">
-        delete from tagessaymapper where tag_id = #{tag_id} and passage_id = #{pasasge_id}
+        delete from tagessaymapper where tag_id = #{tag_id} and passage_id = #{passage_id}
     </delete>
 </mapper>

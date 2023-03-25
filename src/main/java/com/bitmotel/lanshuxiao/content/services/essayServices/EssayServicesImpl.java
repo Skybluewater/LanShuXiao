@@ -96,7 +96,7 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         EssayEntity essayEntity = (EssayEntity) data;
         EssayEntity oldEssayEntity = (EssayEntity) query(essayEntity.getPassage_id());
         if (oldEssayEntity == null) {
-            throw new BusinessException("Essay to be updated do not exist");
+            throw new BusinessException("Essay to be updated do not exist in database");
         }
         if (!Objects.equals(oldEssayEntity.getUser().getUser_id(), essayEntity.getUser().getUser_id())) {
             throw new PermissionException("Trying to modify other one's essay");
@@ -332,18 +332,22 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
     }
 
     @Override
-    public Essays insertEssay(EssayEntity essay) {
+    public Essays insertEssay(EssayEntity essayEntity) {
         try {
-            return essayMapper.insertEssay(new Essays(essay));
+            Essays essay = new Essays(essayEntity);
+            essayMapper.insertEssay(essay);
+            return essay;
         } catch (Exception e) {
             throw new BusinessException("Insert essay failed");
         }
     }
 
     @Override
-    public Essays updateEssay(EssayEntity essay) {
+    public Essays updateEssay(EssayEntity essayEntity) {
         try {
-            return essayMapper.updateEssay(new Essays(essay));
+            Essays essay = new Essays(essayEntity);
+            essayMapper.updateEssay(essay);
+            return essay;
         } catch (Exception e) {
             throw new BusinessException("Update essay failed");
         }
@@ -358,5 +362,4 @@ public class EssayServicesImpl implements EssayServicesI, EditableI<Object> {
         }
     }
 }
-
 

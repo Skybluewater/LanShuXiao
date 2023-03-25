@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TagEssayMapper {
-    public TagEssayEntity insertTagEssayMapper(Integer tag_id, Integer passage_id);
+    public boolean insertTagEssayMapper(Integer tag_id, Integer passage_id);
     public boolean deleteTagEssayMapper(Integer tag_id, Integer passage_id);
     public List<Integer> getPassageIdByTagId(Integer tag_id);
     public List<Integer> getPassageIdByTagIdWithPagination(Integer tag_id, Integer offset, Integer limit);

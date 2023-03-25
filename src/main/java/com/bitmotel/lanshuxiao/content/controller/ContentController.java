@@ -33,7 +33,7 @@ public class ContentController {
     @Autowired
     CategoryServicesI categoryService;
 
-    @GetMapping("/index")
+    @GetMapping("index")
     @ResponseBody
     public Response<HashMap<String, Object>> getIndex(
             @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
@@ -110,12 +110,22 @@ public class ContentController {
         }});
     }
 
+    @GetMapping("tag")
+    @ResponseBody
+    public Response<HashMap<String, Object>> getTagsByUser(
+            UserEntity user
+    ) {
+        return Response.success(new HashMap<>(){{
+            put("tagEntities", (List<TagEntity>) tagService.queryByObject(user));
+        }});
+    }
+
     @PostMapping("essay/delete")
     @ResponseBody
     @LoginRequired
     public Response<Boolean> deleteEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
-        Object user_id = httpSession.getAttribute("user_id");
-        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+        Object user_id = httpSession.getAttribute("userID");
+        if (essay.getUser() == null || !Objects.equals(essay.getUser().getUser_id(), user_id)) {
             throw new PermissionException("Update essay request rejected");
         }
         return Response.success((Boolean) essayService.delete(essay));
@@ -125,8 +135,8 @@ public class ContentController {
     @ResponseBody
     @LoginRequired
     public Response<HashMap<String, EssayEntity>> updateEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
-        Object user_id = httpSession.getAttribute("user_id");
-        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+        Object user_id = httpSession.getAttribute("userID");
+        if (essay.getUser() == null || !Objects.equals(essay.getUser().getUser_id(), user_id)) {
             throw new PermissionException("Update essay request rejected");
         }
         return Response.success(new HashMap<>() {{
@@ -138,8 +148,8 @@ public class ContentController {
     @ResponseBody
     @LoginRequired
     public Response<HashMap<String, EssayEntity>> createEssay(@RequestBody @Valid EssayEntity essay, HttpSession httpSession) {
-        Object user_id = httpSession.getAttribute("user_id");
-        if (essay.getUser() == null || Objects.equals(essay.getUser().getUser_id(), user_id)) {
+        Object user_id = httpSession.getAttribute("userID");
+        if (essay.getUser() == null || !Objects.equals(essay.getUser().getUser_id(), user_id)) {
             throw new PermissionException("Create essay request rejected");
         }
         return Response.success(new HashMap<>() {{
@@ -151,7 +161,7 @@ public class ContentController {
     @ResponseBody
     @LoginRequired
     public Response<HashMap<String, Object>> createTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
-        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        Integer user_id = (Integer) httpSession.getAttribute("userID");
         tagService.create(tag, user_id);
         return Response.success(new HashMap<>() {{
             put("essayEntity", (List<TagEntity>) tagService.queryByUserId(user_id));
@@ -162,7 +172,7 @@ public class ContentController {
     @ResponseBody
     @LoginRequired
     public Response<HashMap<String, Object>> updateTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
-        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        Integer user_id = (Integer) httpSession.getAttribute("userID");
         if (!(Boolean) tagService.queryByObjectByUserId(tag, user_id)) {
             throw new PermissionException("Trying to update other one's tag");
         }
@@ -176,7 +186,7 @@ public class ContentController {
     @ResponseBody
     @LoginRequired
     public Response<HashMap<String, Object>> deleteTag(@RequestBody @Valid TagEntity tag, HttpSession httpSession) {
-        Integer user_id = (Integer) httpSession.getAttribute("user_id");
+        Integer user_id = (Integer) httpSession.getAttribute("userID");
         if (!(Boolean) tagService.queryByObjectByUserId(tag, user_id)) {
             throw new PermissionException("Trying to delete other one's tag");
         }

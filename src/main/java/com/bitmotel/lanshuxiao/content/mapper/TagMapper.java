@@ -15,8 +15,8 @@ public interface TagMapper {
     public List<Tags> getTagsByTagName(String tag_name);
     public Tags getTagByUserIdByTagName(Integer user_id, String tag_name);
     public Integer getTagIdByUserIdByTagName(Integer user_id, String tag_name);
-    public Tags addTag(Tags tag);
+    public boolean addTag(Tags tag);
     // TODO: public Tags updateTag(Tags tag);
-    public Tags updateTag(Tags tag);
+    public boolean updateTag(Tags tag);
     public boolean deleteTag(Integer tag_id);
 }

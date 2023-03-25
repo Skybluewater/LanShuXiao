@@ -41,7 +41,7 @@ public interface EssayMapper {
     // public List<Integer> queryPassageIdByUserEntityWithPagination(UserEntity entity, Integer offset, Integer limit);
     public List<Integer> queryPassageIdByCategoryIdWithPagination(Integer category_id, Integer offset, Integer limit);
     //    public List<Integer> queryPassageIdByCategoriesWithPagination(Categories category, Integer offset, Integer limit);
-    public Essays insertEssay(Essays essay);
-    public Essays updateEssay(Essays essay);
+    public boolean insertEssay(Essays essay);
+    public boolean updateEssay(Essays essay);
     public boolean deleteEssay(Integer passage_id);
 }

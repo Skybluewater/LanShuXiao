@@ -23,12 +23,15 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
 
     @Override
     public Object queryByObjectByUserId(Object data, Integer user_id) {
-        TagEntity tag = (TagEntity) data;
-        if (tag.getTag_id() == null) {
+        TagEntity tagEntity = (TagEntity) data;
+        if (tagEntity.getTag_id() == null) {
             throw new BusinessException("No tag id parsed");
         }
-        Tags tg = tagMapper.getTag(tag.getTag_id());
-        return Objects.equals(tg.getUser_id(), user_id);
+        Tags tag = tagMapper.getTag(tagEntity.getTag_id());
+        if (tag == null) {
+            throw new BusinessException("Tag do not exist in database");
+        }
+        return Objects.equals(tag.getUser_id(), user_id);
     }
 
     @Override
@@ -39,7 +42,11 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
     @Override
     public TagEntity getTag(Integer tag_id) {
         try {
-            return new TagEntity(tagMapper.getTag(tag_id));
+            Tags tag = tagMapper.getTag(tag_id);
+            if (tag == null) {
+                throw new BusinessException("Tag do not exist");
+            }
+            return new TagEntity(tag);
         } catch (Exception e) {
             throw new BusinessException("Tag query by tag_id failed");
         }
@@ -84,18 +91,25 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
     }
 
     @Override
-    public TagEntity updateTag(TagEntity tag) {
+    public TagEntity updateTag(TagEntity tagEntity) {
         try {
-            return new TagEntity(tagMapper.updateTag(new Tags(tag.getTag_id(), null, tag.getTag_name())));
+            if (tagMapper.getTag(tagEntity.getTag_id()) == null) {
+                throw new BusinessException("Tag to be updated do not exist in database");
+            }
+            Tags tag = new Tags(tagEntity.getTag_id(), null, tagEntity.getTag_name());
+            tagMapper.updateTag(tag);
+            return new TagEntity(tag);
         } catch (Exception e) {
             throw new BusinessException("Tag update failed");
         }
     }
 
     @Override
-    public TagEntity addTag(TagEntity tag, Integer user_id) {
+    public TagEntity addTag(TagEntity tagEntity, Integer user_id) {
         try {
-            return new TagEntity(tagMapper.addTag(new Tags(null, user_id, tag.getTag_name())));
+            Tags tag = new Tags(null, user_id, tagEntity.getTag_name());
+            tagMapper.addTag(tag);
+            return new TagEntity(tag);
         } catch (Exception e) {
             throw new BusinessException("Tag creation failed");
         }
@@ -104,6 +118,9 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
     @Override
     public boolean deleteTag(Integer tag_id) {
         try {
+            if (tagMapper.getTag(tag_id) == null) {
+                throw new BusinessException("Tag to be deleted do not exist in database");
+            }
             tagMapper.deleteTag(tag_id);
             return true;
         } catch (Exception e) {
@@ -121,6 +138,15 @@ public class TagServicesImpl implements TagServicesI, EditableI<Object> {
         TagEntity tagEntity = (TagEntity) data;
         // check if tag with id
         if (tagEntity.getTag_id() != null) {
+            Tags oldTag = tagMapper.getTag(tagEntity.getTag_id());
+            // check if tag_id is fake
+            if (oldTag == null) {
+                throw new BusinessException("Tag to be mapped do not exist in database");
+            }
+            // check if tag to use is other one's
+            if (!Objects.equals(oldTag.getUser_id(), user_id)) {
+                throw new PermissionException("Trying to use other one's tag");
+            }
             return tagEntity;
         }
         // check if tag without id already in database
