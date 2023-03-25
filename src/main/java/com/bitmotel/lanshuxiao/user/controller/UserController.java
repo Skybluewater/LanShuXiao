@@ -2,6 +2,7 @@ package com.bitmotel.lanshuxiao.user.controller;
 
 import com.bitmotel.lanshuxiao.annotation.LoginRequired;
 import com.bitmotel.lanshuxiao.annotation.LogoutRequired;
+import com.bitmotel.lanshuxiao.component.PasswordEncoderI;
 import com.bitmotel.lanshuxiao.exception.BusinessException;
 import com.bitmotel.lanshuxiao.response.Response;
 import com.bitmotel.lanshuxiao.user.entity.UserInfoEntity;
@@ -24,6 +25,9 @@ public class UserController {
     @Autowired
     UserServicesI userServicesI;
 
+    @Autowired
+    PasswordEncoderI passwordEncoderI;
+
     @PostMapping("/login")
     @LogoutRequired
     @ResponseBody
@@ -32,7 +36,7 @@ public class UserController {
         if (oldUser == null) {
             throw new BusinessException("User info error");
         }
-        if (oldUser.getPassword().equals(user.getPassword())) {
+        if (passwordEncoderI.matches(user.getPassword(), oldUser.getPassword())) {
             session.setAttribute("userID", oldUser.getUser_id());
             return Response.success(new UserInfoEntity(oldUser));
         }
@@ -47,6 +51,7 @@ public class UserController {
         if (oldUser != null) {
             throw new BusinessException("Username has existed");
         }
+        user.setPassword(passwordEncoderI.encode(user.getPassword()));
         userServicesI.add(user);
         return Response.success(true);
     }

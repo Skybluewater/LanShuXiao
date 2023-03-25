@@ -31,10 +31,7 @@ public class UserServicesImpl implements UserServicesI {
     @Override
     public Users queryByName(String username) {
         Optional<Users> user = Optional.ofNullable(userMapper.queryByName(username));
-        if (user.isPresent()) {
-            return user.get();
-        }
-        throw new BusinessException("Query failed");
+        return user.orElse(null);
     }
 
     @Override
