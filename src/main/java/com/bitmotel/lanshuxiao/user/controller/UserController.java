@@ -10,7 +10,7 @@ import com.bitmotel.lanshuxiao.user.entity.UserLoginEntity;
 import com.bitmotel.lanshuxiao.user.entity.Users;
 import com.bitmotel.lanshuxiao.user.services.UserServicesI;
 import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
+// import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.annotation.Validated;
